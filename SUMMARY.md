@@ -20,6 +20,12 @@
 - [重试](hcm/retries.md)
 - [请求镜像](hcm/request-mirroring.md)
 - [速率限制简介](hcm/rate-limiting-intro.md)
+- [实验 1：请求匹配](hcm/lab1.md)
+- [实验 2：流量分割](hcm/lab2.md)
+- [实验 3：Header 操作](hcm/lab3.md)
+- [实验 4：重试](hcm/lab4.md)
+- [实验 5：局部速率限制](hcm/lab5.md)
+- [实验 6：全局速率限制](hcm/lab6.md)
 
 ## 集群
 
@@ -29,6 +35,7 @@
 - [异常点检测](cluster/outlier-detection.md)
 - [断路器](cluster/circuit-breakers.md)
 - [负载均衡](cluster/load-balancing.md)
+- [实验 7：断路器](cluster/lab7.md)
 
 ## 动态配置
 
@@ -36,6 +43,7 @@
 - [动态配置](dynamic-config/dynamic-configuration.md)
 - [来自文件系统的动态配置](dynamic-config/filesystem.md)
 - [来自控制平面的动态配置](dynamic-config/control-plane.md)
+- [实验 8：来自文件系统的动态配置](dynamic-config/lab8.md)
 
 ## 监听器子系统
 
@@ -47,6 +55,9 @@
 - [原始源监听器过滤器](listener/original-source-listener-filter.md)
 - [代理协议监听器过滤器](listener/proxy-protocol-listener-filter.md)
 - [TLS 检查器监听器过滤器](listener/tls-inspector-listener-filter.md)
+- [实验 9：原始目的地过滤器](listener/lab9.md)
+- [实验 10：TLS 检查器过滤器](listener/lab10.md)
+- [实验 11：匹配传输和应用协议](listener/lab11.md)
 
 ## 日志
 
@@ -55,6 +66,9 @@
 - [配置访问记录器](logging/confguring-logging.md)
 - [访问日志过滤](logging/access-log-filtering.md)
 - [Envoy 组件日志](logging/envoy-component-logs.md)
+- [实验 12：使用日志过滤器](logging/lab12.md)
+- [实验 13：使用 gRPC 访问日志服务（ALS）记录日志](logging/lab13.md)
+- [实验 14：将 Envoy 的日志发送到 Google Cloud Logging](logging/lab14.md)
 
 ## 管理接口
 
@@ -67,6 +81,7 @@
 - [监听器和监听器的排空](admin-interface/listeners-and-draining.md)
 - [分接式过滤器](admin-interface/tap-filter.md)
 - [健康检查](admin-interface/healthchecks.md)
+- [实验 15：使用 HTTP 分接式过滤器](admin-interface/lab15.md)
 
 ## 扩展 Envoy
 
@@ -74,3 +89,5 @@
 - [可扩展性概述](extending-envoy/overview.md)
 - [Lua 过滤器](extending-envoy/lua-filter.md)
 - [WebAssembly（Wasm）](extending-envoy/wasm.md)
+- [实验 16：使用 Lua 脚本扩展 Envoy](extending-envoy/lab16.md)
+- [实验 17：使用 Wasm 和 Go 扩展 Envoy](extending-envoy/lab17.md)
