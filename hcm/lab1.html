@@ -1,0 +1,1662 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>实验 1：请求匹配 · Envoy 基础教程</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="宋净超(Jimmy Song)">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-image-captions/image-captions.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-tbfed-pagefooter/footer.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-ghcolors.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-lightbox/css/lightbox.min.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-insert-logo/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-expandable-chapters-small/expandable-chapters-small.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="lab2.html" />
+    
+    
+    <link rel="prev" href="rate-limiting-intro.html" />
+    
+
+    
+        <link rel="shortcut icon" href='../favicon.ico' type="image/x-icon">
+    
+    
+        <link rel="bookmark" href='../favicon.ico' type="image/x-icon">
+    
+    
+    
+
+    <style>
+    @media only screen and (max-width: 640px) {
+        .book-header .hidden-mobile {
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        window["gitbook-plugin-github-buttons"] = {"repo":"rootsongjc/envoy-handbook","types":["star"],"size":"small"};
+    </script>
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="https://jimmysong.io" target="_blank" class="custom-link">回到主页</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://jimmysong.io/kubernetes-handbook/" target="_blank" class="custom-link">Kubernetes 中文指南</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://jimmysong.io/awesome-cloud-native/" target="_blank" class="custom-link">云原生开源项目大全</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://cloudnative.to/" target="_blank" class="custom-link">云原生社区</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        <li class="header">Envoy 简介</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                        <b>1.1.</b>
+                    
+                    前言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../intro/">
+            
+                <a href="../intro/">
+            
+                    
+                        <b>1.2.</b>
+                    
+                    Envoy 简介概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../intro/what-is-envoy.html">
+            
+                <a href="../intro/what-is-envoy.html">
+            
+                    
+                        <b>1.3.</b>
+                    
+                    什么是 Envoy？
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">HTTP 连接管理器（HCM）</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                        <b>2.1.</b>
+                    
+                    HTTP 连接管理器（HCM）概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="introduction.html">
+            
+                <a href="introduction.html">
+            
+                    
+                        <b>2.2.</b>
+                    
+                    HTTP 连接管理器（HCM）介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="http-routing.html">
+            
+                <a href="http-routing.html">
+            
+                    
+                        <b>2.3.</b>
+                    
+                    HTTP 路由
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="request-matching.html">
+            
+                <a href="request-matching.html">
+            
+                    
+                        <b>2.4.</b>
+                    
+                    请求匹配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="traffic-splitting.html">
+            
+                <a href="traffic-splitting.html">
+            
+                    
+                        <b>2.5.</b>
+                    
+                    流量分割
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="header-manipulation.html">
+            
+                <a href="header-manipulation.html">
+            
+                    
+                        <b>2.6.</b>
+                    
+                    Header 操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="reply-modification.html">
+            
+                <a href="reply-modification.html">
+            
+                    
+                        <b>2.7.</b>
+                    
+                    修改响应
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="request-id-generation.html">
+            
+                <a href="request-id-generation.html">
+            
+                    
+                        <b>2.8.</b>
+                    
+                    生成请求 ID
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="timeout.html">
+            
+                <a href="timeout.html">
+            
+                    
+                        <b>2.9.</b>
+                    
+                    超时
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="retries.html">
+            
+                <a href="retries.html">
+            
+                    
+                        <b>2.10.</b>
+                    
+                    重试
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.11" data-path="request-mirroring.html">
+            
+                <a href="request-mirroring.html">
+            
+                    
+                        <b>2.11.</b>
+                    
+                    请求镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.12" data-path="rate-limiting-intro.html">
+            
+                <a href="rate-limiting-intro.html">
+            
+                    
+                        <b>2.12.</b>
+                    
+                    速率限制简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.13" data-path="lab1.html">
+            
+                <a href="lab1.html">
+            
+                    
+                        <b>2.13.</b>
+                    
+                    实验 1：请求匹配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.14" data-path="lab2.html">
+            
+                <a href="lab2.html">
+            
+                    
+                        <b>2.14.</b>
+                    
+                    实验 2：流量分割
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.15" data-path="lab3.html">
+            
+                <a href="lab3.html">
+            
+                    
+                        <b>2.15.</b>
+                    
+                    实验 3：Header 操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.16" data-path="lab4.html">
+            
+                <a href="lab4.html">
+            
+                    
+                        <b>2.16.</b>
+                    
+                    实验 4：重试
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.17" data-path="lab5.html">
+            
+                <a href="lab5.html">
+            
+                    
+                        <b>2.17.</b>
+                    
+                    实验 5：局部速率限制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.18" data-path="lab6.html">
+            
+                <a href="lab6.html">
+            
+                    
+                        <b>2.18.</b>
+                    
+                    实验 6：全局速率限制
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">集群</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../cluster/">
+            
+                <a href="../cluster/">
+            
+                    
+                        <b>3.1.</b>
+                    
+                    集群概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../cluster/service-discovery.html">
+            
+                <a href="../cluster/service-discovery.html">
+            
+                    
+                        <b>3.2.</b>
+                    
+                    服务发现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../cluster/active-health-checking.html">
+            
+                <a href="../cluster/active-health-checking.html">
+            
+                    
+                        <b>3.3.</b>
+                    
+                    主动健康检查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../cluster/outlier-detection.html">
+            
+                <a href="../cluster/outlier-detection.html">
+            
+                    
+                        <b>3.4.</b>
+                    
+                    异常点检测
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../cluster/circuit-breakers.html">
+            
+                <a href="../cluster/circuit-breakers.html">
+            
+                    
+                        <b>3.5.</b>
+                    
+                    断路器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="../cluster/load-balancing.html">
+            
+                <a href="../cluster/load-balancing.html">
+            
+                    
+                        <b>3.6.</b>
+                    
+                    负载均衡
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="../cluster/lab7.html">
+            
+                <a href="../cluster/lab7.html">
+            
+                    
+                        <b>3.7.</b>
+                    
+                    实验 7：断路器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">动态配置</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../dynamic-config/">
+            
+                <a href="../dynamic-config/">
+            
+                    
+                        <b>4.1.</b>
+                    
+                    动态配置概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../dynamic-config/dynamic-configuration.html">
+            
+                <a href="../dynamic-config/dynamic-configuration.html">
+            
+                    
+                        <b>4.2.</b>
+                    
+                    动态配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="../dynamic-config/filesystem.html">
+            
+                <a href="../dynamic-config/filesystem.html">
+            
+                    
+                        <b>4.3.</b>
+                    
+                    来自文件系统的动态配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="../dynamic-config/control-plane.html">
+            
+                <a href="../dynamic-config/control-plane.html">
+            
+                    
+                        <b>4.4.</b>
+                    
+                    来自控制平面的动态配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="../dynamic-config/lab8.html">
+            
+                <a href="../dynamic-config/lab8.html">
+            
+                    
+                        <b>4.5.</b>
+                    
+                    实验 8：来自文件系统的动态配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">监听器子系统</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../listener/">
+            
+                <a href="../listener/">
+            
+                    
+                        <b>5.1.</b>
+                    
+                    监听器子系统概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../listener/listener-filters.html">
+            
+                <a href="../listener/listener-filters.html">
+            
+                    
+                        <b>5.2.</b>
+                    
+                    监听器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../listener/filter-chain-matching.html">
+            
+                <a href="../listener/filter-chain-matching.html">
+            
+                    
+                        <b>5.3.</b>
+                    
+                    过滤器链匹配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../listener/http-inspector-listener-filter.html">
+            
+                <a href="../listener/http-inspector-listener-filter.html">
+            
+                    
+                        <b>5.4.</b>
+                    
+                    HTTP 检查器监听器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.5" data-path="../listener/original-destination-listener-filter.html">
+            
+                <a href="../listener/original-destination-listener-filter.html">
+            
+                    
+                        <b>5.5.</b>
+                    
+                    原始目的地监听器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.6" data-path="../listener/original-source-listener-filter.html">
+            
+                <a href="../listener/original-source-listener-filter.html">
+            
+                    
+                        <b>5.6.</b>
+                    
+                    原始源监听器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.7" data-path="../listener/proxy-protocol-listener-filter.html">
+            
+                <a href="../listener/proxy-protocol-listener-filter.html">
+            
+                    
+                        <b>5.7.</b>
+                    
+                    代理协议监听器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.8" data-path="../listener/tls-inspector-listener-filter.html">
+            
+                <a href="../listener/tls-inspector-listener-filter.html">
+            
+                    
+                        <b>5.8.</b>
+                    
+                    TLS 检查器监听器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.9" data-path="../listener/lab9.html">
+            
+                <a href="../listener/lab9.html">
+            
+                    
+                        <b>5.9.</b>
+                    
+                    实验 9：原始目的地过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.10" data-path="../listener/lab10.html">
+            
+                <a href="../listener/lab10.html">
+            
+                    
+                        <b>5.10.</b>
+                    
+                    实验 10：TLS 检查器过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.11" data-path="../listener/lab11.html">
+            
+                <a href="../listener/lab11.html">
+            
+                    
+                        <b>5.11.</b>
+                    
+                    实验 11：匹配传输和应用协议
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">日志</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../logging/">
+            
+                <a href="../logging/">
+            
+                    
+                        <b>6.1.</b>
+                    
+                    日志概览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../logging/access-logging.html">
+            
+                <a href="../logging/access-logging.html">
+            
+                    
+                        <b>6.2.</b>
+                    
+                    访问日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="../logging/confguring-logging.html">
+            
+                <a href="../logging/confguring-logging.html">
+            
+                    
+                        <b>6.3.</b>
+                    
+                    配置访问记录器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="../logging/access-log-filtering.html">
+            
+                <a href="../logging/access-log-filtering.html">
+            
+                    
+                        <b>6.4.</b>
+                    
+                    访问日志过滤
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="../logging/envoy-component-logs.html">
+            
+                <a href="../logging/envoy-component-logs.html">
+            
+                    
+                        <b>6.5.</b>
+                    
+                    Envoy 组件日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="../logging/lab12.html">
+            
+                <a href="../logging/lab12.html">
+            
+                    
+                        <b>6.6.</b>
+                    
+                    实验 12：使用日志过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.7" data-path="../logging/lab13.html">
+            
+                <a href="../logging/lab13.html">
+            
+                    
+                        <b>6.7.</b>
+                    
+                    实验 13：使用 gRPC 访问日志服务（ALS）记录日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.8" data-path="../logging/lab14.html">
+            
+                <a href="../logging/lab14.html">
+            
+                    
+                        <b>6.8.</b>
+                    
+                    实验 14：将 Envoy 的日志发送到 Google Cloud Logging
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">管理接口</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../admin-interface/">
+            
+                <a href="../admin-interface/">
+            
+                    
+                        <b>7.1.</b>
+                    
+                    管理接口概览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="../admin-interface/enabling-admin-interface.html">
+            
+                <a href="../admin-interface/enabling-admin-interface.html">
+            
+                    
+                        <b>7.2.</b>
+                    
+                    启用管理接口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="../admin-interface/configuration-dump.html">
+            
+                <a href="../admin-interface/configuration-dump.html">
+            
+                    
+                        <b>7.3.</b>
+                    
+                    配置转储
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.4" data-path="../admin-interface/statistics.html">
+            
+                <a href="../admin-interface/statistics.html">
+            
+                    
+                        <b>7.4.</b>
+                    
+                    统计
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.5" data-path="../admin-interface/logging.html">
+            
+                <a href="../admin-interface/logging.html">
+            
+                    
+                        <b>7.5.</b>
+                    
+                    日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.6" data-path="../admin-interface/clusters.html">
+            
+                <a href="../admin-interface/clusters.html">
+            
+                    
+                        <b>7.6.</b>
+                    
+                    集群
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.7" data-path="../admin-interface/listeners-and-draining.html">
+            
+                <a href="../admin-interface/listeners-and-draining.html">
+            
+                    
+                        <b>7.7.</b>
+                    
+                    监听器和监听器的排空
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.8" data-path="../admin-interface/tap-filter.html">
+            
+                <a href="../admin-interface/tap-filter.html">
+            
+                    
+                        <b>7.8.</b>
+                    
+                    分接式过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.9" data-path="../admin-interface/healthchecks.html">
+            
+                <a href="../admin-interface/healthchecks.html">
+            
+                    
+                        <b>7.9.</b>
+                    
+                    健康检查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.10" data-path="../admin-interface/lab15.html">
+            
+                <a href="../admin-interface/lab15.html">
+            
+                    
+                        <b>7.10.</b>
+                    
+                    实验 15：使用 HTTP 分接式过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">扩展 Envoy</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../extending-envoy/">
+            
+                <a href="../extending-envoy/">
+            
+                    
+                        <b>8.1.</b>
+                    
+                    扩展 Envoy 概览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="8.2" data-path="../extending-envoy/overview.html">
+            
+                <a href="../extending-envoy/overview.html">
+            
+                    
+                        <b>8.2.</b>
+                    
+                    可扩展性概述
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="8.3" data-path="../extending-envoy/lua-filter.html">
+            
+                <a href="../extending-envoy/lua-filter.html">
+            
+                    
+                        <b>8.3.</b>
+                    
+                    Lua 过滤器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="8.4" data-path="../extending-envoy/wasm.html">
+            
+                <a href="../extending-envoy/wasm.html">
+            
+                    
+                        <b>8.4.</b>
+                    
+                    WebAssembly（Wasm）
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="8.5" data-path="../extending-envoy/lab16.html">
+            
+                <a href="../extending-envoy/lab16.html">
+            
+                    
+                        <b>8.5.</b>
+                    
+                    实验 16：使用 Lua 脚本扩展 Envoy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="8.6" data-path="../extending-envoy/lab17.html">
+            
+                <a href="../extending-envoy/lab17.html">
+            
+                    
+                        <b>8.6.</b>
+                    
+                    实验 17：使用 Wasm 和 Go 扩展 Envoy
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >实验 1：请求匹配</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x5B9E;&#x9A8C;-1&#xFF1A;&#x8BF7;&#x6C42;&#x5339;&#x914D;">&#x5B9E;&#x9A8C; 1&#xFF1A;&#x8BF7;&#x6C42;&#x5339;&#x914D;</h1>
+<p>&#x5728;&#x8FD9;&#x4E2A;&#x5B9E;&#x9A8C;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x5B66;&#x4E60;&#x5982;&#x4F55;&#x914D;&#x7F6E;&#x4F7F;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x5339;&#x914D;&#x8BF7;&#x6C42;&#x3002;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528; <code>direct_response</code>&#xFF0C;&#x6211;&#x4EEC;&#x8FD8;&#x4E0D;&#x4F1A;&#x6D89;&#x53CA;&#x4EFB;&#x4F55; Envoy &#x96C6;&#x7FA4;&#x3002;</p>
+<h2 id="&#x8DEF;&#x5F84;&#x5339;&#x914D;">&#x8DEF;&#x5F84;&#x5339;&#x914D;</h2>
+<p>&#x4EE5;&#x4E0B;&#x662F;&#x6211;&#x4EEC;&#x60F3;&#x653E;&#x5165;&#x914D;&#x7F6E;&#x4E2D;&#x7684;&#x89C4;&#x5219;&#xFF1A;</p>
+<ol>
+<li>&#x6240;&#x6709;&#x8BF7;&#x6C42;&#x90FD;&#x9700;&#x8981;&#x6765;&#x81EA; <code>hello.io</code> &#x57DF;&#x540D;&#xFF08;&#x5373;&#x5728;&#x5411;&#x4EE3;&#x7406;&#x53D1;&#x51FA;&#x8BF7;&#x6C42;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528; <code>Host: hello.io</code> &#x6807;&#x5934;&#xFF09;</li>
+<li>&#x6240;&#x6709;&#x5411;&#x8DEF;&#x5F84; <code>/api</code> &#x53D1;&#x51FA;&#x7684;&#x8BF7;&#x6C42;&#x5C06;&#x8FD4;&#x56DE;&#x5B57;&#x7B26;&#x4E32; <code>hello - path</code></li>
+<li>&#x6240;&#x6709;&#x5411;&#x6839;&#x8DEF;&#x5F84;&#xFF08;&#x5373; <code>/</code>&#xFF09;&#x53D1;&#x51FA;&#x7684;&#x8BF7;&#x6C42;&#x5C06;&#x8FD4;&#x56DE;&#x5B57;&#x7B26;&#x4E32; <code>hello - prefix</code></li>
+<li>&#x6240;&#x6709;&#x4EE5; <code>/hello</code> &#x5F00;&#x5934;&#x5E76;&#x5728;&#x540E;&#x9762;&#x52A0;&#x4E0A;&#x6570;&#x5B57;&#x7684;&#x8BF7;&#x6C42;&#xFF08;&#x5982; <code>/hello/1</code>&#xFF0C;<code>/hello/523</code>&#xFF09;&#x90FD;&#x5E94;&#x8FD4;&#x56DE; <code>hello - regex</code>&#x5B57;&#x7B26;&#x4E32;</li>
+</ol>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x770B;&#x4E00;&#x4E0B;&#x914D;&#x7F6E;&#xFF1A;</p>
+<pre class="language-"><code class="lang-yaml"><span class="token key atrule">static_resources</span><span class="token punctuation">:</span>
+  <span class="token key atrule">listeners</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> listener_0
+    <span class="token key atrule">address</span><span class="token punctuation">:</span>
+      <span class="token key atrule">socket_address</span><span class="token punctuation">:</span>
+        <span class="token key atrule">address</span><span class="token punctuation">:</span> 0.0.0.0
+        <span class="token key atrule">port_value</span><span class="token punctuation">:</span> <span class="token number">10000</span>
+    <span class="token key atrule">filter_chains</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">filters</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> envoy.filters.network.http_connection_manager
+        <span class="token key atrule">typed_config</span><span class="token punctuation">:</span>
+          <span class="token key atrule">&quot;@type&quot;</span><span class="token punctuation">:</span> type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          <span class="token key atrule">stat_prefix</span><span class="token punctuation">:</span> hello_service
+          <span class="token key atrule">http_filters</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> envoy.filters.http.router
+          <span class="token key atrule">route_config</span><span class="token punctuation">:</span>
+            <span class="token key atrule">name</span><span class="token punctuation">:</span> route
+            <span class="token key atrule">virtual_hosts</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> hello_vhost
+              <span class="token key atrule">domains</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">&quot;hello.io&quot;</span><span class="token punctuation">]</span>
+              <span class="token key atrule">routes</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/api&quot;</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">200</span>
+                  <span class="token key atrule">body</span><span class="token punctuation">:</span>
+                    <span class="token key atrule">inline_string</span><span class="token punctuation">:</span> <span class="token string">&quot;hello - path&quot;</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">safe_regex</span><span class="token punctuation">:</span>
+                    <span class="token key atrule">google_re2</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+                    <span class="token key atrule">regex</span><span class="token punctuation">:</span> ^/hello/\d+$
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">200</span>
+                  <span class="token key atrule">body</span><span class="token punctuation">:</span>
+                    <span class="token key atrule">inline_string</span><span class="token punctuation">:</span> <span class="token string">&quot;hello - regex&quot;</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">prefix</span><span class="token punctuation">:</span> <span class="token string">&quot;/&quot;</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">200</span>
+                  <span class="token key atrule">body</span><span class="token punctuation">:</span>
+                    <span class="token key atrule">inline_string</span><span class="token punctuation">:</span> <span class="token string">&quot;hello - prefix&quot;</span>
+</code></pre>
+<p>&#x7531;&#x4E8E;&#x6211;&#x4EEC;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x57DF;&#x540D;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528;&#x4E00;&#x4E2A;&#x5355;&#x4E00;&#x7684;&#x865A;&#x62DF;&#x4E3B;&#x673A;&#x3002;&#x57DF;&#x540D;&#x6570;&#x7EC4;&#x5C06;&#x5305;&#x542B;&#x4E00;&#x4E2A;&#x5355;&#x4E00;&#x7684;&#x57DF;&#x540D;&#xFF1A;<code>hello.io</code>&#x3002;&#x8FD9;&#x662F; Envoy &#x8981;&#x505A;&#x7684;&#x7B2C;&#x4E00;&#x5C42;&#x5339;&#x914D;&#x3002;</p>
+<p>&#x7136;&#x540E;&#xFF0C;&#x865A;&#x62DF;&#x4E3B;&#x673A;&#x5C06;&#x6709;&#x591A;&#x4E2A;&#x8DEF;&#x5F84;&#x5339;&#x914D;&#x3002;&#x9996;&#x5148;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528;&#x8DEF;&#x5F84;&#x5339;&#x914D;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x60F3;&#x51C6;&#x786E;&#x5339;&#x914D; <code>/api</code> &#x8DEF;&#x5F84;&#x3002;&#x5176;&#x6B21;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528; <code>^/hello/\d+$</code> &#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x6765;&#x5B9A;&#x4E49;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x5339;&#x914D;&#x3002;&#x6700;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x5B9A;&#x4E49;&#x524D;&#x7F00;&#x5339;&#x914D;&#x3002;&#x6CE8;&#x610F;&#xFF0C;&#x5B9A;&#x4E49;&#x8FD9;&#x4E9B;&#x5339;&#x914D;&#x7684;&#x987A;&#x5E8F;&#x5F88;&#x91CD;&#x8981;&#x3002;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x628A;&#x524D;&#x7F00;&#x5339;&#x914D;&#x653E;&#x5728;&#x6700;&#x524D;&#x9762;&#xFF0C;&#x90A3;&#x4E48;&#x5176;&#x4F59;&#x7684;&#x5339;&#x914D;&#x5C31;&#x4E0D;&#x4F1A;&#x88AB;&#x8BC4;&#x4F30;&#xFF0C;&#x56E0;&#x4E3A;&#x524D;&#x7F00;&#x5339;&#x914D;&#x6C38;&#x8FDC;&#x662F;&#x771F;&#x7684;&#x3002;</p>
+<p>&#x5C06;&#x4E0A;&#x8FF0; YAML &#x4FDD;&#x5B58;&#x4E3A; <code>2-lab-1-request-matching-1.yaml</code>&#xFF0C;&#x7136;&#x540E;&#x8FD0;&#x884C; <code>func-e run -c 2-lab-1-request-matching-1.yaml</code> &#x6765;&#x542F;&#x52A8; Envoy &#x4EE3;&#x7406;&#x3002;</p>
+<p>&#x4ECE;&#x53E6;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x7EC8;&#x7AEF;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x8FDB;&#x884C;&#x4E00;&#x4E9B;&#x6D4B;&#x8BD5;&#x8C03;&#x7528;&#x3002;</p>
+<pre class="language-"><code class="lang-sh">$ <span class="token function">curl</span> -H <span class="token string">&quot;Host: hello.io&quot;</span> localhost:10000
+hello - prefix
+
+$ <span class="token function">curl</span> -H <span class="token string">&quot;Host: hello.io&quot;</span> localhost:10000/api
+hello - path
+
+$ <span class="token function">curl</span> -H <span class="token string">&quot;Host: hello.io&quot;</span> localhost:10000/hello/123
+hello - regex
+</code></pre>
+<h2 id="&#x6807;&#x5934;&#x5339;&#x914D;">&#x6807;&#x5934;&#x5339;&#x914D;</h2>
+<p>&#x5339;&#x914D;&#x4F20;&#x5165;&#x8BF7;&#x6C42;&#x7684;&#x5934;&#x4FE1;&#x606F;&#x53EF;&#x4EE5;&#x4E0E;&#x8DEF;&#x5F84;&#x5339;&#x914D;&#x76F8;&#x7ED3;&#x5408;&#xFF0C;&#x4EE5;&#x5B9E;&#x73B0;&#x590D;&#x6742;&#x7684;&#x573A;&#x666F;&#x3002;&#x5728;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528;&#x524D;&#x7F00;&#x5339;&#x914D;&#x548C;&#x4E0D;&#x540C;&#x5934;&#x4FE1;&#x606F;&#x5339;&#x914D;&#x7684;&#x7EC4;&#x5408;&#x3002;</p>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x8BBE;&#x60F3;&#x4E00;&#x4E9B;&#x89C4;&#x5219;&#xFF1A;</p>
+<ul>
+<li>&#x6240;&#x6709;&#x5E26;&#x5934;&#x4FE1;&#x606F; <code>debug: 1</code> &#x7684; POST &#x8BF7;&#x6C42;&#x53D1;&#x9001;&#x5230; <code>/1</code>&#xFF0C;&#x8FD4;&#x56DE; 422 &#x72B6;&#x6001;&#x7801;</li>
+<li>&#x6240;&#x6709;&#x53D1;&#x9001;&#x81F3; <code>/2</code> &#x7684;&#x5934;&#x4E3A; <code>path</code> &#x4E14;&#x4E0E;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F; <code>^/hello/\d+$</code> &#x76F8;&#x5339;&#x914D;&#x7684;&#x8BF7;&#x6C42;&#x90FD;&#x4F1A;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; 200 &#x72B6;&#x6001;&#x7801;&#x548C;&#x6D88;&#x606F; <code>regex</code></li>
+<li>&#x6240;&#x6709;&#x5C06;&#x5934;&#x540D;&#x79F0; <code>priority</code> &#x8BBE;&#x7F6E;&#x4E3A; 1 &#x5230; 5 &#x4E4B;&#x95F4;&#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x53D1;&#x9001;&#x5230; <code>/3</code> &#x4F1A;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; 200 &#x72B6;&#x6001;&#x7801;&#x548C;&#x6D88;&#x606F; <code>priority</code></li>
+<li>&#x6240;&#x6709;&#x53D1;&#x9001;&#x5230; <code>/4</code> &#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x5982;&#x679C;&#x5B58;&#x5728; <code>test</code> &#x5934;&#xFF0C;&#x90FD;&#x4F1A;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; 500 &#x72B6;&#x6001;&#x7801;</li>
+</ul>
+<p>&#x4EE5;&#x4E0B;&#x662F;&#x7FFB;&#x8BD1;&#x6210; Envoy &#x914D;&#x7F6E;&#x7684;&#x4E0A;&#x8FF0;&#x89C4;&#x5219;&#xFF1A;</p>
+<pre class="language-"><code class="lang-yaml"><span class="token key atrule">static_resources</span><span class="token punctuation">:</span>
+  <span class="token key atrule">listeners</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> listener_0
+    <span class="token key atrule">address</span><span class="token punctuation">:</span>
+      <span class="token key atrule">socket_address</span><span class="token punctuation">:</span>
+        <span class="token key atrule">address</span><span class="token punctuation">:</span> 0.0.0.0
+        <span class="token key atrule">port_value</span><span class="token punctuation">:</span> <span class="token number">10000</span>
+    <span class="token key atrule">filter_chains</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">filters</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> envoy.filters.network.http_connection_manager
+        <span class="token key atrule">typed_config</span><span class="token punctuation">:</span>
+          <span class="token key atrule">&quot;@type&quot;</span><span class="token punctuation">:</span> type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          <span class="token key atrule">stat_prefix</span><span class="token punctuation">:</span> hello_service
+          <span class="token key atrule">http_filters</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> envoy.filters.http.router
+          <span class="token key atrule">route_config</span><span class="token punctuation">:</span>
+            <span class="token key atrule">name</span><span class="token punctuation">:</span> route
+            <span class="token key atrule">virtual_hosts</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> vhost
+              <span class="token key atrule">domains</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">&quot;*&quot;</span><span class="token punctuation">]</span>
+              <span class="token key atrule">routes</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/1&quot;</span>
+                  <span class="token key atrule">headers</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">&quot;:method&quot;</span>
+                    <span class="token key atrule">string_match</span><span class="token punctuation">:</span>
+                      <span class="token key atrule">exact</span><span class="token punctuation">:</span> POST
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">&quot;debug&quot;</span>
+                    <span class="token key atrule">string_match</span><span class="token punctuation">:</span>
+                      <span class="token key atrule">exact</span><span class="token punctuation">:</span> <span class="token string">&quot;1&quot;</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">422</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/2&quot;</span>
+                  <span class="token key atrule">headers</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">&quot;path&quot;</span>
+                    <span class="token key atrule">safe_regex_match</span><span class="token punctuation">:</span>
+                      <span class="token key atrule">google_re2</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+                      <span class="token key atrule">regex</span><span class="token punctuation">:</span> ^/hello/\d+$
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">200</span>
+                  <span class="token key atrule">body</span><span class="token punctuation">:</span>
+                    <span class="token key atrule">inline_string</span><span class="token punctuation">:</span> <span class="token string">&quot;regex&quot;</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/3&quot;</span>
+                  <span class="token key atrule">headers</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">&quot;priority&quot;</span>
+                    <span class="token key atrule">range_match</span><span class="token punctuation">:</span>
+                      <span class="token key atrule">start</span><span class="token punctuation">:</span> <span class="token number">1</span>
+                      <span class="token key atrule">end</span><span class="token punctuation">:</span> <span class="token number">6</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">200</span>
+                  <span class="token key atrule">body</span><span class="token punctuation">:</span>
+                    <span class="token key atrule">inline_string</span><span class="token punctuation">:</span> <span class="token string">&quot;priority&quot;</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/4&quot;</span>
+                  <span class="token key atrule">headers</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token string">&quot;test&quot;</span>
+                    <span class="token key atrule">present_match</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">500</span>
+</code></pre>
+<p>&#x5C06;&#x4E0A;&#x8FF0; YAML &#x4FDD;&#x5B58;&#x4E3A; <code>2-lab-1-request-matching-2.yaml</code> &#x5E76;&#x8FD0;&#x884C; </p>
+<pre class="language-"><code class="lang-sh">func-e run -c <span class="token number">2</span>-lab-1-request-matching-2.yaml
+</code></pre>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x8BD5;&#x7740;&#x53D1;&#x9001;&#x51E0;&#x4E2A;&#x8BF7;&#x6C42;&#xFF0C;&#x6D4B;&#x8BD5;&#x4E00;&#x4E0B;&#x89C4;&#x5219;&#xFF1A;</p>
+<pre class="language-"><code class="lang-sh">$ <span class="token function">curl</span> -v -X POST -H <span class="token string">&quot;debug: 1&quot;</span> localhost:10000/1
+<span class="token punctuation">..</span>.
+<span class="token operator">&gt;</span> User-Agent: curl/7.64.0
+<span class="token operator">&gt;</span> Accept: */*
+<span class="token operator">&gt;</span> debug: <span class="token number">1</span>
+<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span> HTTP/1.1 <span class="token number">422</span> Unprocessable Entity
+
+$ <span class="token function">curl</span> -H <span class="token string">&quot;path: /hello/123&quot;</span> localhost:10000/2
+regex
+
+$ <span class="token function">curl</span> -H <span class="token string">&quot;priority: 3&quot;</span> localhost:10000/3
+priority
+
+
+$ <span class="token function">curl</span> -v -H <span class="token string">&quot;test: tst&quot;</span> localhost:10000/4
+<span class="token punctuation">..</span>.
+<span class="token operator">&gt;</span> User-Agent: curl/7.64.0
+<span class="token operator">&gt;</span> Accept: */*
+<span class="token operator">&gt;</span> test: tst
+<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span> HTTP/1.1 <span class="token number">500</span> Internal Server Error
+</code></pre>
+<h2 id="&#x67E5;&#x8BE2;&#x53C2;&#x6570;&#x5339;&#x914D;">&#x67E5;&#x8BE2;&#x53C2;&#x6570;&#x5339;&#x914D;</h2>
+<p>&#x4E0E;&#x6211;&#x4EEC;&#x505A;&#x8DEF;&#x5F84;&#x548C; Header &#x5339;&#x914D;&#x7684;&#x65B9;&#x5F0F;&#x76F8;&#x540C;&#xFF0C;&#x6211;&#x4EEC;&#x4E5F;&#x53EF;&#x4EE5;&#x5339;&#x914D;&#x7279;&#x5B9A;&#x7684;&#x67E5;&#x8BE2;&#x53C2;&#x6570;&#x548C;&#x5B83;&#x4EEC;&#x7684;&#x503C;&#x3002;&#x67E5;&#x8BE2;&#x53C2;&#x6570;&#x5339;&#x914D;&#x652F;&#x6301;&#x4E0E;&#x5176;&#x4ED6;&#x4E24;&#x9879;&#x76F8;&#x540C;&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;&#xFF1A;&#x5339;&#x914D;&#x7CBE;&#x786E;&#x503C;&#x3001;&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;&#xFF0C;&#x4F7F;&#x7528;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x4EE5;&#x53CA;&#x68C0;&#x67E5;&#x67E5;&#x8BE2;&#x53C2;&#x6570;&#x662F;&#x5426;&#x5305;&#x542B;&#x7279;&#x5B9A;&#x503C;&#x3002;</p>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x8003;&#x8651;&#x914D;&#x7F6E;&#x4E2D;&#x7684;&#x4EE5;&#x4E0B;&#x60C5;&#x666F;&#xFF1A;</p>
+<ul>
+<li>&#x6240;&#x6709;&#x53D1;&#x9001;&#x5230;&#x8DEF;&#x5F84; <code>/1</code> &#x5E76;&#x5E26;&#x6709;&#x67E5;&#x8BE2;&#x53C2;&#x6570; <code>test</code> &#x8BF7;&#x6C42;&#x90FD;&#x8FD4;&#x56DE; 422 &#x72B6;&#x6001;&#x7801;</li>
+<li>&#x6240;&#x6709;&#x53D1;&#x9001;&#x5230;&#x8DEF;&#x5F84; <code>/2</code> &#x7684;&#x67E5;&#x8BE2;&#x53C2;&#x6570;&#x4E3A; <code>env</code> &#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x5176;&#x503C;&#x4EE5; <code>env_</code>&#x5F00;&#x5934;&#xFF08;&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199;&#xFF09;&#xFF0C;&#x8FD4;&#x56DE; 200 &#x72B6;&#x6001;&#x4EE3;&#x7801;</li>
+<li>&#x6240;&#x6709;&#x53D1;&#x9001;&#x5230;&#x8DEF;&#x5F84; <code>/3</code> &#x7684;&#x67E5;&#x8BE2;&#x53C2;&#x6570; <code>debug</code> &#x8BBE;&#x7F6E;&#x4E3A; <code>true</code> &#x7684;&#x8BF7;&#x6C42;&#xFF0C;&#x90FD;&#x8FD4;&#x56DE; 500 &#x72B6;&#x6001;&#x7801;</li>
+</ul>
+<p>&#x4E0A;&#x8FF0;&#x89C4;&#x5219;&#x8F6C;&#x5316;&#x4E3A;&#x4EE5;&#x4E0B; Envoy &#x914D;&#x7F6E;&#xFF1A;</p>
+<pre class="language-"><code class="lang-yaml"><span class="token key atrule">static_resources</span><span class="token punctuation">:</span>
+  <span class="token key atrule">listeners</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> listener_0
+    <span class="token key atrule">address</span><span class="token punctuation">:</span>
+      <span class="token key atrule">socket_address</span><span class="token punctuation">:</span>
+        <span class="token key atrule">address</span><span class="token punctuation">:</span> 0.0.0.0
+        <span class="token key atrule">port_value</span><span class="token punctuation">:</span> <span class="token number">10000</span>
+    <span class="token key atrule">filter_chains</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">filters</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> envoy.filters.network.http_connection_manager
+        <span class="token key atrule">typed_config</span><span class="token punctuation">:</span>
+          <span class="token key atrule">&quot;@type&quot;</span><span class="token punctuation">:</span> type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          <span class="token key atrule">stat_prefix</span><span class="token punctuation">:</span> hello_service
+          <span class="token key atrule">http_filters</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> envoy.filters.http.router
+          <span class="token key atrule">route_config</span><span class="token punctuation">:</span>
+            <span class="token key atrule">name</span><span class="token punctuation">:</span> route
+            <span class="token key atrule">virtual_hosts</span><span class="token punctuation">:</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> vhost
+              <span class="token key atrule">domains</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">&quot;*&quot;</span><span class="token punctuation">]</span>
+              <span class="token key atrule">routes</span><span class="token punctuation">:</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/1&quot;</span>
+                  <span class="token key atrule">query_parameters</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> test
+                    <span class="token key atrule">present_match</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">422</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/2&quot;</span>
+                  <span class="token key atrule">query_parameters</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> env
+                    <span class="token key atrule">string_match</span><span class="token punctuation">:</span>
+                      <span class="token key atrule">prefix</span><span class="token punctuation">:</span> env_
+                      <span class="token key atrule">ignore_case</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">200</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">match</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">&quot;/3&quot;</span>
+                  <span class="token key atrule">query_parameters</span><span class="token punctuation">:</span>
+                  <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> debug
+                    <span class="token key atrule">string_match</span><span class="token punctuation">:</span>
+                      <span class="token key atrule">exact</span><span class="token punctuation">:</span> <span class="token string">&quot;true&quot;</span>
+                <span class="token key atrule">direct_response</span><span class="token punctuation">:</span>
+                  <span class="token key atrule">status</span><span class="token punctuation">:</span> <span class="token number">500</span>
+</code></pre>
+<p>&#x5C06;&#x4E0A;&#x8FF0; YAML &#x4FDD;&#x5B58;&#x4E3A; <code>2-lab-1-request-matching-3.yaml</code> &#x5E76;&#x8FD0;&#x884C; </p>
+<pre class="language-"><code class="lang-sh">func-e run -c <span class="token number">2</span>-lab-1-request-matching-3.yaml
+</code></pre>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x8BD5;&#x7740;&#x53D1;&#x9001;&#x51E0;&#x4E2A;&#x8BF7;&#x6C42;&#xFF0C;&#x6D4B;&#x8BD5;&#x4E00;&#x4E0B;&#x89C4;&#x5219;&#x3002;</p>
+<pre class="language-"><code class="lang-sh">$ <span class="token function">curl</span> -v localhost:10000/1?test
+<span class="token punctuation">..</span>.
+<span class="token operator">&gt;</span> GET /1?test HTTP/1.1
+<span class="token operator">&gt;</span> Host: localhost:10000
+<span class="token operator">&gt;</span> User-Agent: curl/7.64.0
+<span class="token operator">&gt;</span> Accept: */*
+<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span> HTTP/1.1 <span class="token number">422</span> Unprocessable Entity
+
+$ <span class="token function">curl</span> -v localhost:10000/2?env<span class="token operator">=</span>eNv_prod
+<span class="token punctuation">..</span>.
+<span class="token operator">&gt;</span> GET /2?env<span class="token operator">=</span>eNv_prod HTTP/1.1
+<span class="token operator">&gt;</span> Host: localhost:10000
+<span class="token operator">&gt;</span> User-Agent: curl/7.64.0
+<span class="token operator">&gt;</span> Accept: */*
+<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span> HTTP/1.1 <span class="token number">200</span> OK
+
+$ <span class="token function">curl</span> -v localhost:10000/3?debug<span class="token operator">=</span>true
+<span class="token punctuation">..</span>.
+<span class="token operator">&gt;</span> GET /3?debug<span class="token operator">=</span>true HTTP/1.1
+<span class="token operator">&gt;</span> Host: localhost:10000
+<span class="token operator">&gt;</span> User-Agent: curl/7.64.0
+<span class="token operator">&gt;</span> Accept: */*
+<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span> HTTP/1.1 <span class="token number">500</span> Internal Server Error
+</code></pre>
+<footer class="page-footer"><span class="copyright">Copyright &#xA9; 2017-2022 | &#x57FA;&#x4E8E; <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">CC 4.0 &#x534F;&#x8BAE;</a> &#x53D1;&#x5E03; | <a href="https://jimmysong.io" target="_blank">jimmysong.io</a> all right reserved.</span><span class="footer-modification"> Updated at 
+2022-03-04 09:08:06
+</span></footer>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="rate-limiting-intro.html" class="navigation navigation-prev " aria-label="Previous page: 速率限制简介">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="lab2.html" class="navigation navigation-next " aria-label="Next page: 实验 2：流量分割">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"实验 1：请求匹配","level":"2.13","depth":1,"next":{"title":"实验 2：流量分割","level":"2.14","depth":1,"path":"hcm/lab2.md","ref":"hcm/lab2.md","articles":[]},"previous":{"title":"速率限制简介","level":"2.12","depth":1,"path":"hcm/rate-limiting-intro.md","ref":"hcm/rate-limiting-intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","codesnippet","splitter","page-toc-button","image-captions","editlink","back-to-top-button","-lunr","-search","search-plus","github-buttons@2.1.0","favicon@^0.0.2","tbfed-pagefooter@^0.0.1","3-ba","theme-default","-highlight","prism","prism-themes","lightbox","ga","sitemap-general","hide-element","insert-logo","adsense","expandable-chapters-small"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © 2017-2022 | 基于 <a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>CC 4.0 协议</a> 发布 | <a href=https://jimmysong.io>jimmysong.io</a>","modify_label":" Updated at ","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prism-themes/themes/prism-ghcolors.css"]},"github":{"url":"https://github.com/rootsongjc/envoy/handbook/"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/rootsongjc/envoy-handbook/blob/main/"},"splitter":{},"adsense":{"client":"ca-pub-4029167986768912","slot":"2445941692","format":"auto","element":".page-inner section","position":"bottom"},"codesnippet":{},"sitemap-general":{"prefix":"https://jimmysong.io/envoy-handbook/"},"hide-element":{"elements":[".gitbook-link"]},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon":{"shortcut":"favicon.ico","bookmark":"favicon.ico"},"lightbox":{"jquery":true,"sameUuid":false},"page-toc-button":{},"back-to-top-button":{},"prism-themes":{},"github-buttons":{"repo":"rootsongjc/envoy-handbook","types":["star"],"size":"small"},"3-ba":{"configuration":"auto","token":"11f7d254cfa4e0ca44b175c66d379ecc"},"expandable-chapters-small":{},"ga":{"configuration":"auto","token":"UA-93485976-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"showLevel":true,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"insert-logo":{"style":"background: none; max-height: 100px; min-height: 30px","url":"https://jimmysong.io/images/logo-black-text.png"},"search-plus":{},"image-captions":{"caption":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","variable_name":"_pictures"}},"theme":"default","author":"宋净超(Jimmy Song)","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"_pictures":[{"backlink":"hcm/introduction.html#fig2.2.1","level":"2.2","list_caption":"Figure: 请求响应路径及 HTTP 过滤器","alt":"请求响应路径及 HTTP 过滤器","nro":1,"url":"../images/008i3skNly1gz9kop73v4j31kd0u0djh.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"请求响应路径及 HTTP 过滤器","attributes":{},"skip":false,"key":"2.2.1"},{"backlink":"hcm/rate-limiting-intro.html#fig2.12.1","level":"2.12","list_caption":"Figure: 全局和局部速率限制","alt":"全局和局部速率限制","nro":2,"url":"../images/008i3skNly1gzc88zs763j31lw0u0764.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"全局和局部速率限制","attributes":{},"skip":false,"key":"2.12.1"},{"backlink":"dynamic-config/filesystem.html#fig4.3.1","level":"4.3","list_caption":"Figure: 动态配置","alt":"动态配置","nro":3,"url":"../images/008i3skNly1gz9lmh814jj31ha0u00ur.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"动态配置","attributes":{},"skip":false,"key":"4.3.1"},{"backlink":"listener/listener-filters.html#fig5.2.1","level":"5.2","list_caption":"Figure: 监听器过滤器","alt":"监听器过滤器","nro":4,"url":"../images/008i3skNly1gz9lomg0ulj316c0u00up.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"监听器过滤器","attributes":{},"skip":false,"key":"5.2.1"},{"backlink":"listener/lab9.html#fig5.9.1","level":"5.9","list_caption":"Figure: 原始DST过滤器","alt":"原始DST过滤器","nro":5,"url":"../images/e6c9d24ely1gzx091sdqlj217z0r80to.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"原始DST过滤器","attributes":{},"skip":false,"key":"5.9.1"},{"backlink":"logging/lab14.html#fig6.8.1","level":"6.8","list_caption":"Figure: GCP的日志资源管理器中的 Envoy 日志","alt":"GCP的日志资源管理器中的 Envoy 日志","nro":6,"url":"../images/e6c9d24ely1gzxuj0mrbpj210l0a877q.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"GCP的日志资源管理器中的 Envoy 日志","attributes":{},"skip":false,"key":"6.8.1"},{"backlink":"admin-interface/enabling-admin-interface.html#fig7.2.1","level":"7.2","list_caption":"Figure: Envoy 管理接口","alt":"Envoy 管理接口","nro":7,"url":"../images/008i3skNly1gz9lz09aeqj30iq140q6r.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"Envoy 管理接口","attributes":{},"skip":false,"key":"7.2.1"},{"backlink":"extending-envoy/wasm.html#fig8.4.1","level":"8.4","list_caption":"Figure: 代码编译成 wasm","alt":"代码编译成 wasm","nro":8,"url":"../images/008i3skNly1gz9m3g42z8j30j406eq31.jpg","index":1,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"代码编译成 wasm","attributes":{},"skip":false,"key":"8.4.1"},{"backlink":"extending-envoy/wasm.html#fig8.4.2","level":"8.4","list_caption":"Figure: Envoy 线程","alt":"Envoy 线程","nro":9,"url":"../images/008i3skNly1gz9m3f9lmlj30sg0k0dgs.jpg","index":2,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"Envoy 线程","attributes":{},"skip":false,"key":"8.4.2"},{"backlink":"extending-envoy/wasm.html#fig8.4.3","level":"8.4","list_caption":"Figure: API","alt":"API","nro":10,"url":"../images/008i3skNly1gz9m3gjke9j30sg0g5q3u.jpg","index":3,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"API","attributes":{},"skip":false,"key":"8.4.3"},{"backlink":"extending-envoy/wasm.html#fig8.4.4","level":"8.4","list_caption":"Figure: Proxy-Wasm","alt":"Proxy-Wasm","nro":11,"url":"../images/008i3skNly1gz9m3eu5a4j30sg0gcdgs.jpg","index":4,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"Proxy-Wasm","attributes":{},"skip":false,"key":"8.4.4"},{"backlink":"extending-envoy/wasm.html#fig8.4.5","level":"8.4","list_caption":"Figure: 上下文","alt":"上下文","nro":12,"url":"../images/008i3skNly1gz9m3fkp1xj30e806ndfx.jpg","index":5,"caption_template":"图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_：_CAPTION_","label":"上下文","attributes":{},"skip":false,"key":"8.4.5"}]},"title":"Envoy 基础教程","language":"zh-hans","links":{"sidebar":{"回到主页":"https://jimmysong.io","Kubernetes 中文指南":"https://jimmysong.io/kubernetes-handbook/","云原生开源项目大全":"https://jimmysong.io/awesome-cloud-native/","云原生社区":"https://cloudnative.to/"}},"gitbook":"*","description":"Envoy 基础教程"},"file":{"path":"hcm/lab1.md","mtime":"2022-03-04T09:08:06.135Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-03-04T09:08:31.814Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github-buttons/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-3-ba/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lightbox/js/lightbox.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-hide-element/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-insert-logo/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-adsense/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-expandable-chapters-small/expandable-chapters-small.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
