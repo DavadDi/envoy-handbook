@@ -1,6 +1,6 @@
-# Envoy Handbook
+# Envoy 基础教程
 
-Envoy 基础教程，本手册梳理了 Envoy 基础知识，适用于初学者，帮你快速掌握 Envoy 代理。
+本手册梳理了 Envoy 基础知识，适用于初学者，帮你快速掌握 Envoy 代理。
 
 <div align="center">
   <a href="https://jimmysong.io/envoy-handbook/">
@@ -31,3 +31,15 @@ Envoy 基础教程，本手册梳理了 Envoy 基础知识，适用于初学者�
 ## 许可证
 
 您可以使用[署名 - 非商业性使用 - 相同方式共享 4.0 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)  协议共享。
+
+## 云原生社区
+
+<p align="center">
+  <a href="https://cloudnative.to">
+    <img src="./images/github-banner.jpg" alt="加入云原生社区" title="加入云原生社区">
+  </a>
+</p>
+
+云原生社区是中国最大的独立第三方云原生终端用户和泛开发者社区，由 CNCF 大使、开源意见领袖共同发起成立于 2020 年 5 月 12 日，提供云原生专业资讯，促进云原生产业发展。
+
+官方网站 <https://cloudnative.to>，关注云原生社区微信公众号，[申请加入社区](https://mp.weixin.qq.com/s/vWlSdzz2MNdXRr0sd2-LFg)。
