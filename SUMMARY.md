@@ -5,6 +5,7 @@
 - [前言](README.md)
 - [Envoy 简介概述](intro/index.md)
 - [什么是 Envoy？](intro/what-is-envoy.md)
+- [Envoy 的构建模块](intro/envoy-building-blocks.md)
 
 ## HTTP 连接管理器（HCM）
 
